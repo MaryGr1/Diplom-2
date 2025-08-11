@@ -5,6 +5,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.example.User;
 import org.example.UserSteps;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,6 +71,15 @@ public class UserLoginTest {
                 .loginUser(fakeUser)
                 .statusCode(401)
                 .body("success", is(false));
+    }
+
+    @After
+    public void deleteUser() {
+        try {
+            userSteps.userDeleteAfterLogin(user);
+        } catch (Exception e) {
+            System.err.println("Ошибка при удалении пользователя: " + e.getMessage());
+        }
     }
 
 
