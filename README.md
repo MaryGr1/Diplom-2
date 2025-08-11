@@ -13,7 +13,7 @@ Java 11, JUnit 4.13.2, maven 4.0.0, rest-assured 5.5.5
 вход под существующим пользователем;
 вход с неверным логином и паролем.
 
-Создание заказа (CreatingAnOrderTest, CreatingAnOrderParameterizedTest):
+Создание заказа (CreatingAnOrderParameterizedTest):
 
 с авторизацией;
 без авторизации;

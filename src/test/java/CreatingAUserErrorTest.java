@@ -7,7 +7,9 @@ import org.example.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import static ch.qos.logback.classic.spi.CallerData.extract;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 
 public class CreatingAUserErrorTest {
 
@@ -41,10 +43,14 @@ public class CreatingAUserErrorTest {
 
     public void creationWithoutALoginNoEmailTest() {
 
-        userSteps
+        String actualErrorMessage = userSteps
                 .createUserNoEmail(userNoEmail)
                 .statusCode(403)
-                .body("success", is(false));
+                .body("success", is(false))
+                .extract()
+                .path("message");
+        String expectedErrorMessage = "Email, password and name are required fields";
+        assertEquals(expectedErrorMessage, actualErrorMessage);
     }
 
     // создание без пароля
@@ -53,10 +59,14 @@ public class CreatingAUserErrorTest {
 
     public void creationWithoutALoginNoPasswordTest() {
 
-        userSteps
+        String actualErrorMessage = userSteps
                 .createUserNoPassword(userNoPassword)
                 .statusCode(403)
-                .body("success", is(false));
+                .body("success", is(false))
+                .extract()
+                .path("message");
+        String expectedErrorMessage = "Email, password and name are required fields";
+        assertEquals(expectedErrorMessage, actualErrorMessage);
     }
 
     // создание без имени
@@ -65,10 +75,14 @@ public class CreatingAUserErrorTest {
 
     public void creationWithoutALoginNoNameTest() {
 
-        userSteps
+        String actualErrorMessage = userSteps
                 .createUserNoName(userNoName)
                 .statusCode(403)
-                .body("success", is(false));
+                .body("success", is(false))
+                .extract()
+                .path("message");
+        String expectedErrorMessage = "Email, password and name are required fields";
+        assertEquals(expectedErrorMessage, actualErrorMessage);
     }
 
 }

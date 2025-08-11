@@ -70,4 +70,25 @@ public class UserSteps {
     }
 
 
+    @Step("Send DELETE request to /api/auth/user")
+    public ValidatableResponse userDelete(String accessToken) {
+        return given()
+                .header("Authorization", accessToken)
+                .delete("/api/auth/user")
+                .then();
+    }
+    @Step("Delete user data after authorization")
+    public ValidatableResponse userDeleteAfterLogin(User user) {
+        ValidatableResponse loginResponse = loginUser(user);
+        String accessToken = loginResponse.extract().path("accessToken");
+
+        if (accessToken == null) {
+            throw new IllegalStateException("Authorization failed, no access token received. Response: " +
+                    loginResponse.extract().asString());
+        }
+
+        return userDelete(accessToken);
+    }
+
+
 }

@@ -5,6 +5,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.example.User;
 import org.example.UserSteps;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +39,7 @@ public class CreatingAUserTest {
 
         userSteps
                 .createUser(user)
-            //    .statusCode(200)
+                .statusCode(200)
                 .body("success", is(true));
     }
 
@@ -48,16 +49,23 @@ public class CreatingAUserTest {
 
     public void creatingAUserIdenticalStatusCodeTest() {
 
-       userSteps
-               .createUser(user);
-       userSteps
-               .createUser(user)
-               .statusCode(403)
-               .body("success", is(false));
+        userSteps
+                .createUser(user);
+        userSteps
+                .createUser(user)
+                .statusCode(403)
+                .body("success", is(false));
     }
 
-
+    @After
+    public void deleteUser() {
+        try {
+            userSteps.userDeleteAfterLogin(user);
+        } catch (Exception e) {
+            System.err.println("Ошибка при удалении пользователя: " + e.getMessage());
+        }
     }
+}
 
 
 
