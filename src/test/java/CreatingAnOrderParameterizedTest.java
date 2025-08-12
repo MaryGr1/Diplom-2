@@ -71,8 +71,8 @@ public class CreatingAnOrderParameterizedTest extends BaseTest{
                 .statusCode(statusCode);
 
         if (statusCode == 400) {
-            //Убедись, что orderSteps.creatingAnOrder() возвращает JSON, а не XML
-            String actualMessage = response.extract().path("message"); //Извлечение значения по JSON пути
+
+            String actualMessage = response.extract().path("message");
             assertEquals(expectedErrorMessage, actualMessage);
         }
     }
