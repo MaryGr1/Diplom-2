@@ -11,18 +11,18 @@ import static ch.qos.logback.classic.spi.CallerData.extract;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 
-public class CreatingAUserErrorTest {
+public class CreatingAUserErrorTest extends BaseTest{
 
     private UserNoEmail userNoEmail;
     private UserNoPassword userNoPassword;
     private UserNoName userNoName;
-    UserSteps userSteps = new UserSteps();
+    UserSteps userSteps;
 
     @Before
 
     public void setUp() {
 
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
+        super.setUp();
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
         Faker faker = new Faker();
         userNoEmail = new UserNoEmail();
@@ -34,6 +34,7 @@ public class CreatingAUserErrorTest {
         userNoName = new UserNoName();
         userNoName.setEmail(faker.internet().emailAddress());
         userNoName.setPassword(RandomStringUtils.randomAlphabetic(12));
+        userSteps = new UserSteps(reqSpec);
 
     }
 

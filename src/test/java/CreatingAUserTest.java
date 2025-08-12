@@ -10,24 +10,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 
 
-public class CreatingAUserTest {
+public class CreatingAUserTest extends BaseTest {
 
     private User user;
-    UserSteps userSteps = new UserSteps();
+    UserSteps userSteps;
 
     @Before
 
     public void setUp() {
 
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
+        super.setUp();
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
         Faker faker = new Faker();
         user = new User();
         user.setEmail(faker.internet().emailAddress());
         user.setPassword(RandomStringUtils.randomAlphabetic(12));
         user.setName(RandomStringUtils.randomAlphabetic(12));
+        userSteps = new UserSteps(reqSpec);
 
     }
 
@@ -51,10 +53,14 @@ public class CreatingAUserTest {
 
         userSteps
                 .createUser(user);
-        userSteps
+        String actualErrorMessage =  userSteps
                 .createUser(user)
                 .statusCode(403)
-                .body("success", is(false));
+                .body("success", is(false))
+                .extract()
+                .path("message");
+        String expectedErrorMessage = "User already exists";
+        assertEquals(expectedErrorMessage, actualErrorMessage);
     }
 
     @After

@@ -1,18 +1,26 @@
 package org.example;
 
 import io.qameta.allure.Step;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 
-public class UserSteps {
+
+public class UserSteps  {
+
+    private final RequestSpecification reqSpec;
+
+    public UserSteps(RequestSpecification reqSpec) {
+        this.reqSpec = reqSpec;
+    }
+
 
     @Step("Send POST request to /api/auth/register")
 
     public ValidatableResponse createUser (User user){
         return given()
+                .spec(reqSpec)
                 .header("Content-type", "application/json")
                 .and()
                 .body(user)
@@ -25,6 +33,7 @@ public class UserSteps {
 
     public ValidatableResponse createUserNoEmail(UserNoEmail userNoEmail){
         return given()
+                .spec(reqSpec)
                 .header("Content-type", "application/json")
                 .and()
                 .body(userNoEmail)
@@ -37,6 +46,7 @@ public class UserSteps {
 
     public ValidatableResponse createUserNoPassword(UserNoPassword userNoPassword){
         return given()
+                .spec(reqSpec)
                 .header("Content-type", "application/json")
                 .and()
                 .body(userNoPassword)
@@ -49,6 +59,7 @@ public class UserSteps {
 
     public ValidatableResponse createUserNoName(UserNoName userNoName){
         return given()
+                .spec(reqSpec)
                 .header("Content-type", "application/json")
                 .and()
                 .body(userNoName)
@@ -61,6 +72,7 @@ public class UserSteps {
 
     public ValidatableResponse loginUser(User user){
         return given()
+                .spec(reqSpec)
                 .header("Content-type", "application/json")
                 .and()
                 .body(user)
@@ -73,6 +85,7 @@ public class UserSteps {
     @Step("Send DELETE request to /api/auth/user")
     public ValidatableResponse userDelete(String accessToken) {
         return given()
+                .spec(reqSpec)
                 .header("Authorization", accessToken)
                 .delete("/api/auth/user")
                 .then();
